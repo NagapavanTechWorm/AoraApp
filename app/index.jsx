@@ -1,4 +1,4 @@
-import { Link } from 'expo-router';
+import { Link,router,Redirect } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { ScrollView, Text, View,Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -16,10 +16,10 @@ export default function App() {
             <Text className="text-white text-3xl font-bold text-center">Discover Endless Possibilities with{' '}
              <Text className="text-secondary-200">Aora</Text></Text>
           </View>
-          <Text className="text-sm font-pregular text-gray-100 mt-7 text-center">Where Creativity meets innovation: embark on a journey of limitless exploration with Aora</Text>
+          <Text className="text-sm font-Pregular text-gray-100 mt-7 text-center">Where Creativity meets innovation: embark on a journey of limitless exploration with Aora</Text>
           <CustomButton
            title={"Continue with Email"}
-           handlePress = {()=>{}}
+           handlePress = {()=>router.push("/sign-in")}
            contentContainerStyle={"w-full mt-6"}
             />
         </View>

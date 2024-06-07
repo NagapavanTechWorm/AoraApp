@@ -1,12 +1,89 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text, ScrollView, Image } from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { images } from '../../constants';
+import FormField from '../../components/FormField';
+import CustomButton from "../../components/CustomButton"
+import { Link } from 'expo-router';
 
-const SignUp = () => {
+const SignIn = () => {
+  const [formData, setFormData] = useState({
+    email: '',
+    password: '',
+    username:''
+  });
+
+  const [isSubmiting, setIsSubmiting] = useState(false);
+
+
+  const handleSubmit = ()=>{
+
+  }
+
+  const handleNameChange = (text) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      username: text,
+    }));
+  };
+
+
+  const handleEmailChange = (text) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      email: text,
+    }));
+  };
+
+  const handlePasswordChange = (text) => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      password: text,
+    }));
+  };
+
   return (
-    <View>
-      <Text>SignUp</Text>
-    </View>
-  )
-}
+    <SafeAreaView className="bg-primary h-full">
+      <ScrollView>
+        <View className="min-h-[90vh] justify-center px-4 my-6">
+          <Image source={images.logo} className="w-[115px] h-[35px]" resizeMode="contain" />
+          <Text className="mt-4 text-white text-2xl font-Psemibold">Signup to Aora</Text>
+          <FormField
+            title="Username"
+            value={formData.username}
+            handleChangeText={handleNameChange}
+            otherStyles="mt-7"
+          />
+          <FormField
+            title="Email"
+            value={formData.email}
+            handleChangeText={handleEmailChange}
+            otherStyles="mt-7"
+            keyboardType="email-address"
+          />
+          <FormField
+            title="password"
+            value={formData.password}
+            handleChangeText={handlePasswordChange}
+            otherStyles="mt-7"
+            secureTextEntry
+          />
+          <CustomButton
+            title={"Sign-up"}
+            handlePress={handleSubmit}
+            isLoading={isSubmiting}
+            contentContainerStyle={"mt-8"}
 
-export default SignUp
+          />
+          <View className="flex flex-row justify-center items-center gap-3 p-4">
+              <Text className="text-white mt-5 text-base font-semibold" >have a account</Text>
+              <Link href={"/sign-in"} className='text-secondary font-semibold text-base' >Sign-in</Link>
+          </View>
+
+        </View>
+      </ScrollView >
+    </SafeAreaView>
+  );
+};
+
+export default SignIn;

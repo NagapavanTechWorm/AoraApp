@@ -1,10 +1,11 @@
-import { View, Text, ScrollView, Image } from 'react-native';
+import { View, Text, ScrollView, Image,Alert } from 'react-native';
 import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { images } from '../../constants';
 import FormField from '../../components/FormField';
 import CustomButton from "../../components/CustomButton"
-import { Link } from 'expo-router';
+import { Link ,router} from 'expo-router';
+import { signIn,getCurrentUser } from '../../lib/appwrite';
 
 const SignIn = () => {
   const [formData, setFormData] = useState({
@@ -12,12 +13,31 @@ const SignIn = () => {
     password: ''
   });
 
-  const [isSubmiting, setIsSubmiting] = useState(false);
+  const { setUser, setIsLogged } = useGlobalContext();
+  const [isSubmitting, setSubmitting] = useState(false);
 
 
-  const handleSubmit = ()=>{
+  const handleSubmit = async () => {
+    if (formData.email === "" || formData.password === "") {
+      Alert.alert("Error", "Please fill in all fields");
+    }
 
-  }
+    setSubmitting(true);
+
+    try {
+      await signIn(formData.email, formData.password);
+      const result = await getCurrentUser();
+      setUser(result);
+      setIsLogged(true);
+
+      Alert.alert("Success", "User signed in successfully");
+      router.replace("/home");
+    } catch (error) {
+      Alert.alert("Error", error.message);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
 
   const handleEmailChange = (text) => {
@@ -39,7 +59,7 @@ const SignIn = () => {
       <ScrollView>
         <View className="min-h-[90vh] justify-center px-4 my-6">
           <Image source={images.logo} className="w-[115px] h-[35px]" resizeMode="contain" />
-          <Text className="mt-4 text-white text-2xl font-Psemibold">Login to Aora</Text>
+          <Text className="mt-4 text-white text-2xl font-PsemiBold">Login to Aora</Text>
           <FormField
             title="Email"
             value={formData.email}
